@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="instiModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="alumne">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nom" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="cognom" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="edat" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="assignatura">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nom" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="dada">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="alumneid" Type="int" Nullable="false" />
+    <Property Name="assignaturaid" Type="int" Nullable="false" />
+    <Property Name="professorid" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="profe">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nom" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="cognom" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="edat" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_dada_alumne">
+    <End Role="alumne" Type="Self.alumne" Multiplicity="1" />
+    <End Role="dada" Type="Self.dada" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="alumne">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="dada">
+        <PropertyRef Name="alumneid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dada_assignatura">
+    <End Role="assignatura" Type="Self.assignatura" Multiplicity="1" />
+    <End Role="dada" Type="Self.dada" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="assignatura">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="dada">
+        <PropertyRef Name="assignaturaid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dada_profe">
+    <End Role="profe" Type="Self.profe" Multiplicity="1" />
+    <End Role="dada" Type="Self.dada" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="profe">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="dada">
+        <PropertyRef Name="professorid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="instiModelStoreContainer">
+    <EntitySet Name="alumne" EntityType="Self.alumne" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="assignatura" EntityType="Self.assignatura" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="dada" EntityType="Self.dada" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="profe" EntityType="Self.profe" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_dada_alumne" Association="Self.FK_dada_alumne">
+      <End Role="alumne" EntitySet="alumne" />
+      <End Role="dada" EntitySet="dada" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dada_assignatura" Association="Self.FK_dada_assignatura">
+      <End Role="assignatura" EntitySet="assignatura" />
+      <End Role="dada" EntitySet="dada" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dada_profe" Association="Self.FK_dada_profe">
+      <End Role="profe" EntitySet="profe" />
+      <End Role="dada" EntitySet="dada" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

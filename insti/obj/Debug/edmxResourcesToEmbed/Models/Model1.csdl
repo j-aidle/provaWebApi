@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="instiModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="alumne">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nom" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="cognom" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="edat" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="dada" Relationship="Self.FK_dada_alumne" FromRole="alumne" ToRole="dada" />
+  </EntityType>
+  <EntityType Name="assignatura">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nom" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="dada" Relationship="Self.FK_dada_assignatura" FromRole="assignatura" ToRole="dada" />
+  </EntityType>
+  <EntityType Name="dada">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="alumneid" Type="Int32" Nullable="false" />
+    <Property Name="assignaturaid" Type="Int32" Nullable="false" />
+    <Property Name="professorid" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="alumne" Relationship="Self.FK_dada_alumne" FromRole="dada" ToRole="alumne" />
+    <NavigationProperty Name="assignatura" Relationship="Self.FK_dada_assignatura" FromRole="dada" ToRole="assignatura" />
+    <NavigationProperty Name="profe" Relationship="Self.FK_dada_profe" FromRole="dada" ToRole="profe" />
+  </EntityType>
+  <EntityType Name="profe">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nom" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="cognom" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="edat" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="dada" Relationship="Self.FK_dada_profe" FromRole="profe" ToRole="dada" />
+  </EntityType>
+  <Association Name="FK_dada_alumne">
+    <End Role="alumne" Type="Self.alumne" Multiplicity="1" />
+    <End Role="dada" Type="Self.dada" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="alumne">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="dada">
+        <PropertyRef Name="alumneid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dada_assignatura">
+    <End Role="assignatura" Type="Self.assignatura" Multiplicity="1" />
+    <End Role="dada" Type="Self.dada" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="assignatura">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="dada">
+        <PropertyRef Name="assignaturaid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dada_profe">
+    <End Role="profe" Type="Self.profe" Multiplicity="1" />
+    <End Role="dada" Type="Self.dada" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="profe">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="dada">
+        <PropertyRef Name="professorid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="instiEntities1" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="alumne" EntityType="Self.alumne" />
+    <EntitySet Name="assignatura" EntityType="Self.assignatura" />
+    <EntitySet Name="dada" EntityType="Self.dada" />
+    <EntitySet Name="profe" EntityType="Self.profe" />
+    <AssociationSet Name="FK_dada_alumne" Association="Self.FK_dada_alumne">
+      <End Role="alumne" EntitySet="alumne" />
+      <End Role="dada" EntitySet="dada" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dada_assignatura" Association="Self.FK_dada_assignatura">
+      <End Role="assignatura" EntitySet="assignatura" />
+      <End Role="dada" EntitySet="dada" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dada_profe" Association="Self.FK_dada_profe">
+      <End Role="profe" EntitySet="profe" />
+      <End Role="dada" EntitySet="dada" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

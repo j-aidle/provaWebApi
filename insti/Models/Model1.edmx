@@ -1,0 +1,262 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="instiModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="alumne">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nom" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="cognom" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="edat" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="assignatura">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nom" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="dada">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="alumneid" Type="int" Nullable="false" />
+          <Property Name="assignaturaid" Type="int" Nullable="false" />
+          <Property Name="professorid" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="profe">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nom" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="cognom" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="edat" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_dada_alumne">
+          <End Role="alumne" Type="Self.alumne" Multiplicity="1" />
+          <End Role="dada" Type="Self.dada" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="alumne">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="dada">
+              <PropertyRef Name="alumneid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dada_assignatura">
+          <End Role="assignatura" Type="Self.assignatura" Multiplicity="1" />
+          <End Role="dada" Type="Self.dada" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="assignatura">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="dada">
+              <PropertyRef Name="assignaturaid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dada_profe">
+          <End Role="profe" Type="Self.profe" Multiplicity="1" />
+          <End Role="dada" Type="Self.dada" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="profe">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="dada">
+              <PropertyRef Name="professorid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="instiModelStoreContainer">
+          <EntitySet Name="alumne" EntityType="Self.alumne" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="assignatura" EntityType="Self.assignatura" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="dada" EntityType="Self.dada" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="profe" EntityType="Self.profe" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_dada_alumne" Association="Self.FK_dada_alumne">
+            <End Role="alumne" EntitySet="alumne" />
+            <End Role="dada" EntitySet="dada" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dada_assignatura" Association="Self.FK_dada_assignatura">
+            <End Role="assignatura" EntitySet="assignatura" />
+            <End Role="dada" EntitySet="dada" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dada_profe" Association="Self.FK_dada_profe">
+            <End Role="profe" EntitySet="profe" />
+            <End Role="dada" EntitySet="dada" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="instiModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="alumne">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nom" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="cognom" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="edat" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="dada" Relationship="Self.FK_dada_alumne" FromRole="alumne" ToRole="dada" />
+        </EntityType>
+        <EntityType Name="assignatura">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nom" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="dada" Relationship="Self.FK_dada_assignatura" FromRole="assignatura" ToRole="dada" />
+        </EntityType>
+        <EntityType Name="dada">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="alumneid" Type="Int32" Nullable="false" />
+          <Property Name="assignaturaid" Type="Int32" Nullable="false" />
+          <Property Name="professorid" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="alumne" Relationship="Self.FK_dada_alumne" FromRole="dada" ToRole="alumne" />
+          <NavigationProperty Name="assignatura" Relationship="Self.FK_dada_assignatura" FromRole="dada" ToRole="assignatura" />
+          <NavigationProperty Name="profe" Relationship="Self.FK_dada_profe" FromRole="dada" ToRole="profe" />
+        </EntityType>
+        <EntityType Name="profe">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nom" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="cognom" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="edat" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="dada" Relationship="Self.FK_dada_profe" FromRole="profe" ToRole="dada" />
+        </EntityType>
+        <Association Name="FK_dada_alumne">
+          <End Role="alumne" Type="Self.alumne" Multiplicity="1" />
+          <End Role="dada" Type="Self.dada" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="alumne">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="dada">
+              <PropertyRef Name="alumneid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dada_assignatura">
+          <End Role="assignatura" Type="Self.assignatura" Multiplicity="1" />
+          <End Role="dada" Type="Self.dada" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="assignatura">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="dada">
+              <PropertyRef Name="assignaturaid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dada_profe">
+          <End Role="profe" Type="Self.profe" Multiplicity="1" />
+          <End Role="dada" Type="Self.dada" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="profe">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="dada">
+              <PropertyRef Name="professorid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="instiEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="alumne" EntityType="Self.alumne" />
+          <EntitySet Name="assignatura" EntityType="Self.assignatura" />
+          <EntitySet Name="dada" EntityType="Self.dada" />
+          <EntitySet Name="profe" EntityType="Self.profe" />
+          <AssociationSet Name="FK_dada_alumne" Association="Self.FK_dada_alumne">
+            <End Role="alumne" EntitySet="alumne" />
+            <End Role="dada" EntitySet="dada" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dada_assignatura" Association="Self.FK_dada_assignatura">
+            <End Role="assignatura" EntitySet="assignatura" />
+            <End Role="dada" EntitySet="dada" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dada_profe" Association="Self.FK_dada_profe">
+            <End Role="profe" EntitySet="profe" />
+            <End Role="dada" EntitySet="dada" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="instiModelStoreContainer" CdmEntityContainer="instiEntities1">
+          <EntitySetMapping Name="alumne">
+            <EntityTypeMapping TypeName="instiModel.alumne">
+              <MappingFragment StoreEntitySet="alumne">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nom" ColumnName="nom" />
+                <ScalarProperty Name="cognom" ColumnName="cognom" />
+                <ScalarProperty Name="edat" ColumnName="edat" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="assignatura">
+            <EntityTypeMapping TypeName="instiModel.assignatura">
+              <MappingFragment StoreEntitySet="assignatura">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nom" ColumnName="nom" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="dada">
+            <EntityTypeMapping TypeName="instiModel.dada">
+              <MappingFragment StoreEntitySet="dada">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="alumneid" ColumnName="alumneid" />
+                <ScalarProperty Name="assignaturaid" ColumnName="assignaturaid" />
+                <ScalarProperty Name="professorid" ColumnName="professorid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="profe">
+            <EntityTypeMapping TypeName="instiModel.profe">
+              <MappingFragment StoreEntitySet="profe">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nom" ColumnName="nom" />
+                <ScalarProperty Name="cognom" ColumnName="cognom" />
+                <ScalarProperty Name="edat" ColumnName="edat" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

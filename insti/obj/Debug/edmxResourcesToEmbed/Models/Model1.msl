@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="instiModelStoreContainer" CdmEntityContainer="instiEntities1">
+    <EntitySetMapping Name="alumne">
+      <EntityTypeMapping TypeName="instiModel.alumne">
+        <MappingFragment StoreEntitySet="alumne">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="nom" ColumnName="nom" />
+          <ScalarProperty Name="cognom" ColumnName="cognom" />
+          <ScalarProperty Name="edat" ColumnName="edat" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="assignatura">
+      <EntityTypeMapping TypeName="instiModel.assignatura">
+        <MappingFragment StoreEntitySet="assignatura">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="nom" ColumnName="nom" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="dada">
+      <EntityTypeMapping TypeName="instiModel.dada">
+        <MappingFragment StoreEntitySet="dada">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="alumneid" ColumnName="alumneid" />
+          <ScalarProperty Name="assignaturaid" ColumnName="assignaturaid" />
+          <ScalarProperty Name="professorid" ColumnName="professorid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="profe">
+      <EntityTypeMapping TypeName="instiModel.profe">
+        <MappingFragment StoreEntitySet="profe">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="nom" ColumnName="nom" />
+          <ScalarProperty Name="cognom" ColumnName="cognom" />
+          <ScalarProperty Name="edat" ColumnName="edat" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
