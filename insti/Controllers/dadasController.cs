@@ -8,12 +8,14 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using System.Web.Http.Description;
 using insti;
 using insti.Models;
 
 namespace insti.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class dadasController : ApiController
     {
         private instiEntities1 db = new instiEntities1();
@@ -43,7 +45,7 @@ namespace insti.Controllers
                                 nom = c.profe.nom,
                                 cognom = c.profe.cognom,
                                 edat = c.profe.edat
-                            }
+                            },
                         };
             return dades;
         }
@@ -89,35 +91,46 @@ namespace insti.Controllers
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> Putdada(int id, dada dada)
         {
-            if (!ModelState.IsValid)
+            var dades = await db.dada.Where(f => f.id == id).FirstOrDefaultAsync();
+            if (dades != null)
             {
-                return BadRequest(ModelState);
-            }
-
-            if (id != dada.alumneid)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(dada).State = EntityState.Modified;
-
-            try
-            {
+                dades.alumneid = dada.alumneid;
+                dades.professorid = dada.professorid;
+                dades.assignaturaid = dada.assignaturaid;
                 await db.SaveChangesAsync();
+                return Ok();
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!dadaExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            return NotFound();
 
-            return StatusCode(HttpStatusCode.NoContent);
+            ////if (!ModelState.IsValid)
+            ////{
+            ////    return BadRequest(ModelState);
+            ////}
+
+            ////if (id != dada.alumneid)
+            ////{
+            ////    return BadRequest();
+            ////}
+
+            ////db.Entry(dada).State = EntityState.Modified;
+
+            ////try
+            ////{
+            ////    await db.SaveChangesAsync();
+            ////}
+            ////catch (DbUpdateConcurrencyException)
+            ////{
+            ////    if (!dadaExists(id))
+            ////    {
+            ////        return NotFound();
+            ////    }
+            ////    else
+            ////    {
+            ////        throw;
+            ////    }
+            ////}
+
+            ////return StatusCode(HttpStatusCode.NoContent);
         }
 
         // POST: api/dadas
@@ -137,7 +150,7 @@ namespace insti.Controllers
             }
             catch (DbUpdateException)
             {
-                if (dadaExists(dada.alumneid))
+                if (dadaExists(dada.alumneid) && dadaExists(dada.professorid) && dadaExists(dada.assignaturaid))
                 {
                     return Conflict();
                 }
@@ -146,7 +159,6 @@ namespace insti.Controllers
                     throw;
                 }
             }
-
             return CreatedAtRoute("DefaultApi", new { id = dada.alumneid }, dada);
         }
 

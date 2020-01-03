@@ -8,12 +8,14 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using System.Web.Http.Description;
 using insti;
 using insti.Models;
 
 namespace insti.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class alumnesController : ApiController
     {
         private instiEntities1 db = new instiEntities1();
@@ -57,35 +59,17 @@ namespace insti.Controllers
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> Putalumne(int id, alumne alumne)
         {
-            if (!ModelState.IsValid)
+            var alum = await db.alumne.Where(f => f.id == id).FirstOrDefaultAsync();
+            if (alum != null)
             {
-                return BadRequest(ModelState);
-            }
-
-            if (id != alumne.id)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(alumne).State = EntityState.Modified;
-
-            try
-            {
+                alum.nom = alumne.nom;
+                alum.cognom = alumne.cognom;
+                alum.edat = alumne.edat;
                 await db.SaveChangesAsync();
+                return Ok();
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!alumneExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            return NotFound();
 
-            return StatusCode(HttpStatusCode.NoContent);
         }
 
         // POST: api/alumnes

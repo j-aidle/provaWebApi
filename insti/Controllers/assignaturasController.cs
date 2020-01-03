@@ -8,12 +8,14 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using System.Web.Http.Description;
 using insti;
 using insti.Models;
 
 namespace insti.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class assignaturasController : ApiController
     {
         private instiEntities1 db = new instiEntities1();
@@ -54,35 +56,14 @@ namespace insti.Controllers
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> Putassignatura(int id, assignatura assignatura)
         {
-            if (!ModelState.IsValid)
+            var asig = await db.assignatura.Where(f => f.id == id).FirstOrDefaultAsync();
+            if (asig != null)
             {
-                return BadRequest(ModelState);
-            }
-
-            if (id != assignatura.id)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(assignatura).State = EntityState.Modified;
-
-            try
-            {
+                asig.nom = assignatura.nom;
                 await db.SaveChangesAsync();
+                return Ok();
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!assignaturaExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return StatusCode(HttpStatusCode.NoContent);
+            return NotFound();
         }
 
         // POST: api/assignaturas
